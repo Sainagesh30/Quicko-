@@ -1,0 +1,74 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(254, 214, 110); /* Light Yellow Background */
+    margin: 0;
+    padding: 0;
+    transition: opacity 0.5s ease; /* Transition effect */
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background-color:rgb(255, 164, 132);
+    padding: 20px;
+    text-align: center; /* Center text for the container */
+}
+
+h1 {
+    margin-bottom: 20px; /* Space below the heading */
+    color: #04030f; /* Very Dark Blue/Black for text */
+}
+
+/* Button Styles */
+.option-button {
+    background-color: transparent; /* Transparent background */
+    border: 5px solid transparent; /* Initial border */
+    border-radius: 15px; /* Rounded corners */
+    padding: 50px 70px; /* Large padding for bigger buttons */
+    font-size: 24px; /* Larger font size */
+    cursor: pointer;
+    position: relative; /* For positioning the glow effect */
+    overflow: hidden; /* Prevent overflow of the glow effect */
+    margin: 20px auto; /* Center buttons with auto margin */
+    
+}
+
+.option-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit; /* Match border radius */
+    border: 5px solid rgb(255, 164, 132); /* Button border color */
+    transition: all 0.3s ease; /* Transition for the glow effect */
+}
+
+.option-button:hover::before {
+    border-color: #854d27; /* Dark Brown on hover */
+    box-shadow: 0 0 20px rgb(255, 164, 132), 
+                0 0 40px rgb(255, 164, 132), 
+                0 0 60px rgb(255, 164, 132); /* Glowing effect */
+}
+
+/* Image Styles */
+.animated-image {
+    width: 50px; /* Adjust image size */
+    margin-right: 10px; /* Space between image and text */
+}
+
+.button-container {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+}
+
+/* Fade In Effect on Page Load */
+.fade-in {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0;
+}

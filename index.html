@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quicko!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 85vh;
+            background-color: #f4c95d; /* Light Yellow Background */
+            transition: opacity 0.5s ease; /* Transition effect */
+        }
+
+        .logo {
+            mix-blend-mode: multiply;
+            height: 300px;
+            width: 380px; /* Adjust logo size */
+            margin-bottom: 2px;
+            animation: fadeIn 1s ease-in-out; /* Logo fade-in animation */
+        }
+
+        .description {
+            max-width: 600px;
+            width: 200%;
+            border-radius: 240px 20px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            background-color: antiquewhite;
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 20px;
+            color: #04030f; /* Very Dark Blue/Black for text */
+            opacity: 0;
+            animation: slideIn 1s forwards 0.5s; /* Description slide-in animation */
+        }
+
+        .start-button {
+            background-color: #dd7230; /* Orange for the button */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Transition effects */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            opacity: 0; /* Start with hidden button */
+            animation: fadeIn 1s forwards 1s; /* Button fade-in animation */
+        }
+
+        .start-button:hover {
+            background-color: #854d27; /* Dark Brown on hover */
+            transform: scale(1.0); /* Scale up effect on hover */
+        }
+
+        .start-button:active {
+            transform: scale(0.9); /* Scale down effect on click */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .description {
+                font-size: 1.2em; /* Adjust font size for smaller screens */
+            }
+
+            .start-button {
+                padding: 12px 24px; /* Adjust button size for smaller screens */
+                font-size: 16px; /* Adjust font size for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://i.postimg.cc/mk253K9Y/logo.png" alt="Quicko Logo" class="logo"> <!-- Replace with your logo path -->
+    
+    <div class="description">
+        <h1>Welcome to Quicko!</h1>
+        <p>Your one-stop solution for quick and delicious meals.</p>
+    </div>
+
+    <button class="start-button" onclick="goToStart()">Start</button>
+
+    <script>
+        function goToStart() {
+            // Add a fade-out effect
+            document.body.style.opacity = '0';
+            
+            // Redirect after the transition
+            setTimeout(() => {
+                location.href = 'start.html'; // Change to your start page
+            }, 500); // Match this duration to the CSS transition duration
+        }
+
+        // Optional fade-in effect on page load
+        window.onload = () => {
+            document.body.style.opacity = '1';
+        };
+    </script>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: rgb(254, 214, 110); /* Light background for better aesthetics */
+        }
+
+        .container {
+            background-color: antiquewhite; /* White background for contrast */
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc; /* Light border for better visibility */
+        }
+
+        th {
+            background-color: antiquewhite; /* Light grey background for header */
+        }
+
+        .total {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .receipt-container {
+            display:block;
+            border: 25px solid transparent; /* Darker border for contrast */
+            border-radius: 20px; /* Less rounded corners for modern look */
+            padding: 20px; 
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            background-color: antiquewhite; /* White background for contrast */
+        }
+
+        .order-type {
+            font-family: Arial, sans-serif;
+            font-size: 1.2em; /* Slightly larger font for visibility */
+            margin-bottom: 20px; /* Space below the order type */
+        }
+
+        button {
+            background-color: #4CAF50; /* Green button */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px; /* Rounded corners */
+            transition: background-color 0.3s; /* Transition for button */
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Your order has been placed successfully.</h3>
+        <p>Your Receipt</p>
+    </div>
+
+    <div class="receipt-container">
+        <h2>Order Receipt</h2>
+
+        <!-- Display Order Type -->
+        <div class="order-type" id="order-type"></div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Items</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="order-items"></tbody> <!-- Populate order items here -->
+        </table>
+
+        <div class="total">
+            <table>
+                <thead>
+                    <tr>
+                        <td colspan="2">Sub Total:</td>
+                        <td id="subtotal">&#8377;0</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">GST (5%):</td>
+                        <td id="gst">&#8377;0</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Total:</td>
+                        <td id="total">&#8377;0</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <p>Payment Method: <span id="payment-method"></span></p>
+        <p>Transaction ID: <span id="transaction-id"></span></p>
+        <button onclick="location.href=' thankyou.html'">Continue</button>
+    </div>
+
+    <script>
+        // Retrieve order details from localStorage
+        const orderItems = JSON.parse(localStorage.getItem('selectedItems')) || [];
+        const paymentMethod = localStorage.getItem('paymentMethod') || '';
+        const transactionId = localStorage.getItem('transactionId') || '';
+        const orderType = localStorage.getItem('orderType') || 'Not specified'; // Default if not set
+
+        // Populate order items in the table
+        const itemsTable = document.getElementById('order-items');
+        let subtotal = 0; // Initialize subtotal
+
+        orderItems.forEach(item => {
+            const row = document.createElement('tr');
+            const itemTotal = item.price * item.quantity; // Calculate total price for the item
+            subtotal += itemTotal; // Accumulate subtotal
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>&#8377;${itemTotal.toFixed(2)}</td> <!-- Display item total formatted to two decimal places -->
+            `;
+            itemsTable.appendChild(row);
+        });
+
+        // Calculate GST and total
+        const gst = subtotal * 0.05; // Calculate GST as 5%
+        const total = subtotal + gst;
+
+        // Update the displayed values
+        document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+        document.getElementById('gst').textContent = gst.toFixed(2);
+        document.getElementById('total').textContent = total.toFixed(2);
+        document.getElementById('payment-method').textContent = paymentMethod;
+        document.getElementById('transaction-id').textContent = transactionId;
+        document.getElementById('order-type').textContent = `Order Type: ${orderType}`;
+    </script>
+</body>
+</html>

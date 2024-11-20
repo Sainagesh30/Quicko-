@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Your Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-summary-container {
+            height: 300px; /* Set a fixed height */
+            overflow-y: scroll; /* Enable vertical scrolling */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: none;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .quantity-input {
+            padding: 3px;
+            width: 60px; /* Set a fixed width for the quantity input */
+        }
+
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .save-for-later-btn {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .save-for-later-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .add-more-btn {
+            background-color: #2ecc71;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .add-more-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .empty-message {
+            color: gray;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .coupon-input {
+            margin-top: 20px;
+            display: flex;
+        }
+
+        .coupon-input input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 50%;
+            font-size: 16px;
+        }
+
+        .coupon-input button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #3498db;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .coupon-input button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Order Summary</h2>
+        <div class="order-summary-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Items</th>
+                        <th>Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="order-summary"></tbody>
+            </table>
+        </div>
+        <p class="empty-message" id="empty-message" style="display: none;">No items in your order.</p>
+        <p>Total: &#8377<span id="total-price">0</span></p>
+        <button class="add-more-btn" onclick="location.href='menu.html'">Add More Items</button>
+        <button class="proceed-btn" onclick="location.href='payment.html'">Proceed to Payment</button>
+        <div class="coupon-input">
+            <input type="text ```html
+            " id="coupon-input" placeholder="Enter coupon code">
+            <button id="apply-coupon-btn">Apply Coupon</button>
+        </div>
+        <button id="clear-cart-btn" class="clear-cart-btn">Clear Cart</button>
+    </div>
+
+    <script>
+        // Retrieve order items from localStorage
+        const order = JSON.parse(localStorage.getItem('selectedItems')) || [];
+        const orderSummary = document.getElementById('order-summary');
+        const totalPriceElement = document.getElementById('total-price');
+        const emptyMessage = document.getElementById('empty-message');
+        const couponInput = document.getElementById('coupon-input');
+        const applyCouponBtn = document.getElementById('apply-coupon-btn');
+        const clearCartButton = document.getElementById('clear-cart-btn');
+        let totalPrice = 0;
+
+        // Display each item in the order summary
+        if (order.length === 0) {
+            emptyMessage.style.display = 'block'; // Show empty message
+        } else {
+            order.forEach(item => {
+                const tr = document.createElement("tr");
+                const itemTotalPrice = item.price * item.quantity; // Calculate total price for the item
+
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>
+                        <input type="number" value="${item.quantity}" min="1" max="100" class="quantity-input" onchange="updateQuantity(${order.indexOf(item)}, this.value)">
+                    </td>
+                    <td>
+                        <button class="remove-btn" onclick="removeItem(${order.indexOf(item)})">Remove</button>
+                        <button class="save-for-later-btn" onclick="saveForLater(${order.indexOf(item)})">Save for Later</button>
+                    </td>
+                `;
+                orderSummary.appendChild(tr);
+                totalPrice += itemTotalPrice; // Update total price
+            });
+            // Display total price
+            totalPriceElement.innerText = totalPrice.toFixed(2);
+        }
+
+        // Update item quantity
+        function updateQuantity(index, quantity) {
+            if (index > -1) {
+                order[index].quantity = parseInt(quantity);
+                localStorage.setItem('selectedItems', JSON.stringify(order));
+                location.reload(); // Reload to update the order summary
+            }
+        }
+
+        // Remove item from order
+        function removeItem(index) {
+            if (index > -1) {
+                order.splice(index, 1);
+                localStorage.setItem('selectedItems', JSON.stringify(order));
+                location.reload(); // Reload to update the order summary
+            }
+        }
+
+        // Save item for later
+        function saveForLater(index) {
+            if (index > -1) {
+                const savedItems = JSON.parse(localStorage.getItem('savedItems')) || [];
+                savedItems.push(order[index]);
+                localStorage.setItem('savedItems', JSON.stringify(savedItems));
+                order.splice(index, 1);
+                localStorage.setItem('selectedItems', JSON.stringify(order));
+                location.reload(); // Reload to update the order summary
+            }
+        }
+
+        // Apply coupon code
+        applyCouponBtn.onclick = () => {
+            const couponCode = couponInput.value;
+            // Check if coupon code is valid
+            if (couponCode === "COUPON10") {
+                // Apply 10% discount to order
+                totalPrice *= 0.9;
+                totalPriceElement.innerText = totalPrice.toFixed(2);
+            } else {
+                // Display error message
+                alert("Invalid coupon code");
+            }
+        };
+
+        // Clear cart
+        clearCartButton.onclick = () => {
+            // Clear cart by removing all items from order array and updating localStorage
+            localStorage.removeItem('selectedItems');
+            location.reload(); // Reload to update the order summary
+        };
+    </script>
+</body>
+</html>

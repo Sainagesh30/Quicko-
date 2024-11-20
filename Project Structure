@@ -1,0 +1,11 @@
+restaurant-management-system/
+│
+├── index.html           # Start Page
+├── takeaway.html        # Takeaway or Eat-In Page
+├── menu.html            # Menu Page
+├── ordering.html        # Ordering Page
+├── payment.html         # Payment Page
+└── thankyou.html        # Thank You Page
+│
+└── styles.css           # CSS Stylesheet
+└── script.js            # JavaScript File

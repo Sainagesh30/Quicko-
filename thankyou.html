@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Google Font -->
+    <title>Thank You!</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Use Roboto font */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+            background-color: rgb(254, 214, 110); /* Light background color */
+            transition: background-color 0.5s ease; /* Smooth background transition */
+        }
+
+        .container {
+            max-width: 600px;
+            width: 60%;
+            text-align: center;
+            background-color: antiquewhite; /* White background for the container */
+            border-radius: 240px 20px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            padding: 40px; /* Padding for the container */
+            transition: transform 0.3s ease; /* Smooth transform transition */
+            opacity: 0; /* Start with opacity 0 for fade-in effect */
+            animation: fadeIn 0.5s forwards; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Start transparent */
+                transform: translateY(20px); /* Start slightly lower */
+            }
+            to {
+                opacity: 1; /* End fully visible */
+                transform: translateY(0); /* End at original position */
+            }
+        }
+
+        h2 {
+            color: #4CAF50; /* Green color for the heading */
+            margin-bottom: 20px; /* Space below heading */
+        }
+
+        p {
+            color: #555; /* Darker grey for text */
+            margin-bottom: 30px; /* Space below paragraph */
+        }
+
+        button {
+            background-color: #4CAF50; /* Green button */
+            color: white;
+            border: none;
+            padding: 12px 24px; /* Padding for button */
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px; /* Larger font size */
+            cursor: pointer;
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s, transform 0.3s; /* Transition for hover effects */
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+
+        button:focus {
+            outline: none; /* Remove focus outline */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thank You!</h2>
+        <p>Your order has been placed successfully.</p>
+
+        <button onclick="clearDataAndGoHome()">Back to Home</button>
+    </div>
+
+    <script>
+        function sendTransactionDataToServer(transactionData) {
+            fetch('https://your-api-endpoint.com/transactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(transactionData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function calculateTotalPrice() {
+            const orderItems = JSON.parse(localStorage.getItem('selectedItems')) || [];
+            return orderItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+        function clearDataAndGoHome() {
+            // Prepare transaction data
+            const transactionData = {
+                items: JSON.parse(localStorage.getItem('selectedItems')),
+                paymentMethod: localStorage.getItem('paymentMethod'),
+                transactionId: localStorage.getItem('transactionId'),
+                totalPrice: calculateTotalPrice() // Calculate total price based on stored items
+            };
+
+            // Send transaction data to your server
+            sendTransactionDataToServer(transactionData);
+
+            // Clear local storage
+            localStorage.clear();
+
+            // Redirect to home page
+            location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

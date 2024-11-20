@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Menu</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .left-frame {
+            width: 20%;
+            background-color: rgb(254, 214, 110);
+            padding: 30px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            border-right: 5px solid #ccc;
+            overflow-y: auto;
+            transition: background-color 0.3s ease;
+        }
+
+        .left-frame:hover {
+            background-color: rgb(254, 213, 110);
+        }
+
+        .right-frame {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-right {
+            background-color: #fff;
+            flex: 8;
+            padding: 20px;
+            height: 70vh;
+            overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .bottom-right {
+            flex: 2;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-top: 5px solid #ccc;
+            height: 30vh;
+            overflow-y: auto;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+            margin: 0 0 10px;
+        }
+
+        button {
+            margin-left: 10px;
+            margin-bottom: 20px;
+            padding: 5px 10px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        .bottom-right button {
+            background-color: #28a745;
+            color: #ffffff;
+        }
+
+        .bottom-right button:hover {
+            background-color: #00ff3c;
+            transform: scale(1.05);
+        }
+
+        .add-to-cart {
+            background-color: #007bffc2;
+            color: #ffffff;
+            border-radius: 5px;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #007bff;
+        }
+
+        .left-frame p {
+            margin: 20px 0;
+            cursor: pointer;
+            color: #000000;
+            transition: background-color 0.3s ease;
+        }
+
+        .left-frame p:hover {
+            border-radius: 50px;
+            background-color: #e9ecef90;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px; /* Reduced width */
+            height: 20px; /* Reduced height */
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cccccc;
+            transition: .4s;
+            border-radius: 20px; /* Adjusted radius */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px; /* Reduced height */
+            width: 16px; /* Reduced width */
+            left: 2px; /* Adjusted position */
+            bottom: 2px; /* Adjusted position */
+            background-color: rgb(255, 255, 255);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #44ff00;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px); /* Adjusted translation */
+        }
+
+        .menu-item {
+            margin: 10px;
+            width: 150px;
+            height: 250px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .menu-item:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-item img {
+            width: 90%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .menu-item-info {
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .left-frame {
+                width: 30%;
+            }
+
+            .right-frame {
+                width: 70%;
+            }
+
+            .menu-item {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-frame">
+        <h2>Categories</h2>
+        <label class="switch">
+            <input type="checkbox" id="veg-toggle" onchange="toggleVegOnly()">
+            <span class="slider round"></span>
+        </label>
+        <span id="toggle-label">Veg Only</span>
+        <p onclick="filterMenu('all')">All</p>
+        <p onclick="filterMenu('burger')">Burgers</p>
+        <p onclick="filterMenu('pizza')">Pizza</p>
+        <p onclick="filterMenu('biryani')">Biryani</p>
+        <p onclick="filterMenu('salad')">Salads</p>
+        <p onclick="filterMenu('dessert')">Desserts</p>
+        <p onclick="filterMenu('soup')">Soup</p>
+        <p onclick="filterMenu('streetFood')">Street Food</p>
+        <p onclick="filterMenu('sandwiches')">Sandwiches</p>
+        <p onclick="filterMenu('thalis')">Thalis</p>
+        <p onclick="filterMenu('beverages')">Beverages</p>
+        <p onclick="filterMenu('snacks')">Snacks</p>
+        <p onclick="filterMenu('southIndian')">South Indian</p>
+        <p onclick="filterMenu('northIndian')">North Indian</p>
+        <p onclick="filterMenu('veggieDelights')">Veggie Delights</p>
+    </div>
+
+    <div class="right-frame">   
+        <h1>Food Items</h1>
+        <div class="top-right" id="menu-items">
+            <!-- Food items will be populated here dynamically -->
+        </div>
+
+        <div class="bottom-right">
+            <h3>Selected Items</h3>
+            <ul id="selected-items"></ul>
+            <button onclick="location.href='ordering.html'">Proceed to Order</button>
+        </div>
+    </div>
+
+    <script>
+        const menuItems = [
+            { name: "Classic Cheese Burger", category: "burger", price: 8, type: "non-veg", image: "https://carlsjr.com.my/wp-content/uploads/2020/08/classic-burger-with-cheese-2-450x450.png" },
+            { name: "Veggie Delight Burger", category: "burger", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.lY0i3Du3564GKafBwLekqAHaFl?rs=1&pid=ImgDetMain" },       
+            { name: "Classic Cheese Burger", category: "burger", price: 8, type: "non-veg", image: "https://carlsjr.com.my/wp-content/uploads/2020/08/classic-burger-with-cheese-2-450x450.png" },
+            { name: "Veggie Delight Burger", category: "burger", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.lY0i3Du3564GKafBwLekqAHaFl?rs=1&pid=ImgDetMain"},
+            { name: "Chicken Bacon Burger", category: "burger", price: 10, type: "non-veg", image: "https://th.bing.com/th/id/OIP.R-VwWpfUMWAi7nAUn44XLwHaH_?w=143&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Mushroom Swiss Burger", category: "burger", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.3m8_lqBR0MB1FKEBFbu74wHaHa?w=193&h=193&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Lamb Burger", category: "burger", price: 12, type: "non-veg", image: "https://png.pngtree.com/png-vector/20240417/ourmid/pngtree-3d-lamb-burger-png-image_12294791.png" },
+            { name: "Veggie Black Bean Burger", category: "burger", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.RdiHnV1eNeFjHUV84P_QQgHaHa?w=164&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Chicken Tikka Burger", category: "burger", price: 11, type: "non-veg", image: "https://th.bing.com/th/id/OIP.kpAASn3MoNOgtUezs5AxggAAAA?w=175&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Grilled Cheese Burger", category: "burger", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.XyEDdTOOoY7tzwJYKQ8pBQHaHa?w=166&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Bacon Cheeseburger", category: "burger", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.lvbG92OeptS2b77ETsFzDwHaFq?w=245&h=187&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Veggie Patty Burger", category: "burger", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.W1tOyeg6XYQs5ZPf3n3veAHaH_?w=183&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Margherita Pizza", category: "pizza", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP._BKihkebh-8TDpPIfW4hKQHaHQ?w=202&h=198&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Chicken Tikka Pizza", category: "pizza", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.hOm9mftQk9bnxf8PJ_oxtgHaHa?rs=1&pid=ImgDetMain" },
+            { name: "Veggie Delight Pizza", category: "pizza", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.RZgM5TZOub-sVrTNSGfZFwHaHd?w=199&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Meat Lover's Pizza", category: "pizza", price: 15, type: "non-veg", image: "https://th.bing.com/th/id/OIP.W_aYNJnkzllWYYXi3OkBOwHaHa?w=190&h=190&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Four Cheese Pizza", category: "pizza", price: 12, type: "veg", image: "https://th.bing.com/th/id/OIP.n9jDWoWD_JRQVeX6IwitmgHaDv?w=348&h=176&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "BBQ Chicken Pizza", category: "pizza", price: 13, type: "non-veg", image: "https://th.bing.com/th/id/OIP.XzWEvcY5xsNeED6RxJAQrwHaDj?w=344&h=168&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Veggie Supreme Pizza", category: "pizza", price: 11, type: "veg", image: "https://th.bing.com/th/id/OIP.n23IKhWecfZfzWFILYyudwHaGb?w=181&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Shrimp Scampi Pizza", category: "pizza", price: 14, type: "non-veg", image: "https://th.bing.com/th/id/OIP.V_0TUeYpKsC_dGL83yBZsQHaHa?w=181&h=181&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Mushroom and Onion Pizza", category: "pizza", price: 10, type: "veg", image: "https://www.bing.com/th/id/OIP.1QMPNhx6wUvTpOq7KZCrHAHaHi?w=190&h=194&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Pepperoni Pizza", category: "pizza", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.X3OM_-hzif83caOZKFDCCAHaGL?w=195&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Paneer Biryani", category: "biryani", price: 11, type: "veg", image: "https://th.bing.com/th/id/OIP.qi2Q3GNI1Liz1XdnR631YgHaHZ?w=201&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Chicken Dum Biryani", category: "biryani", price: 13, type: "non-veg", image: "https://th.bing.com/th/id/OIP.Ga-etxR7sTZXqiLmxjB1nwHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Veg Biryani", category: "biryani", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.Fw3iDPaw-yYbRODWupUd6AAAAA?w=190&h=190&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Mutton Biryani", category: "biryani", price: 15, type: "non-veg", image: "https://th.bing.com/th/id/OIP.cGMKfxJjQeYXL6qc57WERAAAAA?w=172&h=176&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Egg Biryani", category: "biryani", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.kpj74E_X0i6m_jjiWkZ5TQHaHa?w=195&h=195&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Sindhi Biryani", category: "biryani", price: 14, type: "non-veg", image: "https://th.bing.com/th/id/OIP.FG--dCJ63BHNOognMORbQQHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Hyderabadi Biryani", category: "biryani", price: 13, type: "non-veg", image: "https://th.bing.com/th/id/OIP.Lhuk_OGBBJJvuDu7KFuJIAHaHa?w=196&h=196&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Lucknowi Biryani", category: "biryani", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.RDtP97yxVqU2poNoOvULcAHaHa?rs=1&pid=ImgDetMain" },
+            { name: "Veg Jalfrezi Biryani", category: "biryani", price: 10, type: "veg", image: "https://png.pngtree.com/png-vector/20240615/ourmid/pngtree-indian-vegetable-biryani-in-balti-dish-shot-from-topview-and-isolated-png-image_12487118.png" },
+            { name: "Chicken Tikka Biryani", category: "biryani", price: 14, type: "non-veg", image: "https://th.bing.com/th/id/OIP.dKR1WV85AWD82ptw7J4hDAHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+            { name: "Greek Salad", category: "salad", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.-EEeYcOk2zL_8lybhMWl5gHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Caesar Salad", category: "salad", price: 10, type: "non-veg", image: "https://th.bing.com/th/id/OIP.Mbc1eYbn83aqqQoetAmcQQHaGt?w=211&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Delight Salad", category: "salad", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.z6M1wIijFck5VKN9BuUcuAHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Tuna Salad", category: "salad", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.ewsZjTFKJ-WBHnYgPwZaGAHaGx?w=206&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Fruit Salad", category: "salad", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.sjn-KU5TVOHb96P4jk0P2wHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Tikka Salad", category: "salad", price: 11, type: "non-veg", image: "https://th.bing.com/th/id/OIP.gldo9QLuAg1xlHvbWo85CQHaHa?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Garden Salad", category: "salad", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.zyjHxaoBfEnTm0lbOunGQAHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Shrimp Salad", category: "salad", price: 13, type: "non-veg", image: "https://th.bing.com/th/id/OIP.FIcL8HX3c8249V8B94HaEwHaHa?pid=ImgDet&w=179&h=179&c=7&dpr=1.3" },
+{ name: "Veggie Wrap Salad", category: "salad", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.2C_pek0ImpG_pXWmjUrOWwHaGv?w=183&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Quesadilla Salad", category: "salad", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.Mbc1eYbn83aqqQoetAmcQQHaGt?w=194&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Gulab Jamun", category: "dessert", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.IaKdLqEKI9_rfCu7o7e32wHaE8?w=280&h=187&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chocolate Brownie", category: "dessert", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.YY8RtBjBxgVe0u2R6NaiMgHaDq?w=333&h=173&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Cheesecake", category: "dessert", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.rDi1dwcr6zDR0X3-ibukwQHaD7?w=342&h=181&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Tiramisu", category: "dessert", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.xhslMXV47vxsxyAlPbnXCgHaHa?w=168&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Fruit Tart", category: "dessert", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.FpyYv14zeDMBymSOHnQTagHaDp?w=314&h=172&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Ice Cream Sundae", category: "dessert", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.dGwwTNEqnYRuW1b2bkIgMwHaI1?w=149&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Cannoli", category: "dessert", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.by2AMXs8a_aoHRMnQgaqeQHaD8?w=301&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Mango Lassi Cheesecake", category: "dessert", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.2k0a_BmbbxeIwSYz5jZ2QwAAAA?w=135&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Pistachio Kulfi", category: "dessert", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.bLzHc1A88_mYLrQfZO4IPQHaDh?w=299&h=166&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Ras Malai", category: "dessert", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.Xi5n2sbg0EwkQnVcIIzwjAHaE8?w=261&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Tomato Soup", category: "soup", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.M43Lr9gaNFXm9iaXx3FNQQHaEi?w=282&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Noodle Soup", category: "soup", price: 7, type: "non-veg", image: "https://th.bing.com/th/id/OIP.32VQ4oKxg_H_YHBQqdbEpgHaE8?w=292&h=195&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Cream of Broccoli Soup", category: "soup", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.kQDa9OyZEfK_9gngeXUOXgHaHS?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Butternut Squash Soup", category: "soup", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.cn4Jx_PBdDe0c7NkcgwvcQHaFO?w=279&h=198&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Spicy Black Bean Soup", category: "soup", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.JBOqbD0aZQ_KOb4d5Khg0wHaHa?w=169&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Tortilla Soup", category: "soup", price: 8, type: "non-veg", image: "https://th.bing.com/th/id/OIP.9CXwn1PJbWbDBogsBfsiZwHaGZ?w=219&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Minestrone Soup", category: "soup", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.WTYvzTfwaHSZw4v9pYTfiAHaFs?w=259&h=199&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "French Onion Soup", category: "soup", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.dWb7wBLN2I1CxYfxv8QtmAAAAA?w=195&h=196&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Lentil Soup", category: "soup", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.O9peQvL4IL-t4FF5MP9mlAHaEO?w=297&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken and Rice Soup", category: "soup", price: 8, type: "non-veg", image: "https://th.bing.com/th/id/OIP.rO-qLMx5gcJn1B3x5Bvr2gHaJ4?pid=ImgDet&w=179&h=238&c=7&dpr=1.3" },
+{ name: "Pani Puri", category: "streetFood", price: 3, type: "veg", image: "https://th.bing.com/th/id/OIP.b79dnkI52cJiUhWxsGe71gHaE8?w=276&h=184&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Kebab Roll", category: "streetFood", price: 6, type: "non-veg", image: "https://th.bing.com/th/id/OIP.EcMCnRImdAuOFLfo3fuYRwHaEO?w=297&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Vada Pav", category: "streetFood", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.CBOIK-gY1_P1vOkeQa43NAAAAA?w=189&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Samosas", category: "streetFood", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.s5IkxdjSma9sO1wuH_MPSAHaFH?w=254&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Pav Bhaji", category: "streetFood", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.paAB-tT2g_TmkFtvS5KL4QHaFZ?w=235&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Misal Pav", category: "streetFood", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.699U086lDoWbBPKc482bWAAAAA?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Bhel Puri", category: "streetFood", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.IsCm6p-ySqA8SIWH6X9NKgHaE8?w=282&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Raj Kachori", category: "streetFood", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.OCL6HMZdu9Jadc5gnDWB5QHaGP?rs=1&pid=ImgDetMain" },
+{ name: "Kulfi Falooda", category: "streetFood", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.3vcnnu0xgEXkK2qb1vwSAAHaHa?w=202&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Sandwich", category: "sandwiches", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.htniuORrrK11AkiQ5k1qaQHaFN?w=269&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Sandwich", category: "sandwiches", price: 8, type: "non-veg", image: "https://th.bing.com/th/id/OIP.DZG4MophgpYR9fKmlEZczgHaE5?w=284&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Grilled Cheese Sandwich", category: "sandwiches", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.M45uoeac4Y2atMnG3rvEBgHaE8?w=286&h=191&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Club Sandwich", category: "sandwiches", price: 10, type: "non-veg", image: "https://th.bing.com/th/id/OIP.ocU-rZpYWYtS6BWozZfHggHaHa?w=189&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Reuben Sandwich", category: "sandwiches", price: 9, type: "non-veg", image: "https://th.bing.com/th/id/OIP.CtGdWRy-r-MQfLjFcYEbkAHaD2?w=291&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Delight Sandwich", category: "sandwiches", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.P6s5Tgujntmq5PgFsLmBMAHaEY?w=284&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Tikka Sandwich", category: "sandwiches", price: 9, type: "non-veg", image: "https://th.bing.com/th/id/OIP.v4l0HrZEMDZ4VPiSS5Cz_gHaHa?w=178&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Egg Salad Sandwich", category: "sandwiches", price: 7, type: "non-veg", image: "https://th.bing.com/th/id/OIP.pYoqnPwzfCtKcY4cRZ_2swHaFu?w=236&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Tuna Salad Sandwich", category: "sandwiches", price: 9, type: "non-veg", image: "https://th.bing.com/th/id/OIP.wFuIqgqZXFv3hXxPkzHxLQHaHa?w=201&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Wrap Sandwich", category: "sandwiches", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.URJ1GonX6YZHDD_y1cvIIgHaE8?rs=1&pid=ImgDetMain" },
+{ name: "Chicken Quesadilla Sandwich", category: "sandwiches", price: 10, type: "non-veg", image: "https://th.bing.com/th/id/OIP.GWspxfmRbCGj2oGdana1RQHaE-?w=223&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Falafel Sandwich", category: "sandwiches", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.0-aP63oCEQ4pNnlzlwNLNQHaD_?w=338&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Grilled Panini Sandwich", category: "sandwiches", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.iHvRvcivEbgaAz3Nxr8j9gHaFX?w=224&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chicken Caesar Sandwich", category: "sandwiches", price: 10, type: "non-veg", image: "https://th.bing.com/th/id/OIP.cN2WC7pkmZ77T1dFnDT-NAAAAA?w=167&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Delight Wrap Sandwich", category: "sandwiches", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.3mdpZZadJLPvoqKqg7qarwHaFj?w=220&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Turkey Sandwich", category: "sandwiches", price: 9, type: "non-veg", image: "https://th.bing.com/th/id/OIP.nTVtiMfwNqBFF0AWEbsshwHaD7?w=285&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veg Thali", category: "thalis", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.ZcIcRGUfXx0cmhJcSKPJ1QAAAA?w=290&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Non-Veg Thali", category: "thalis", price: 14, type: "non-veg", image: "https://th.bing.com/th/id/OIP.kOgCPmDIl0FkSCcxBtif0AHaHN?w=191&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "South Indian Thali", category: "thalis", price: 12, type: "veg", image: "https://th.bing.com/th/id/OIP.tc49BMbG-L5jLnX2XPyoiAHaGb?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "North Indian Thali", category: "thalis", price: 14, type: "non-veg", image: "https://th.bing.com/th/id/OIP.YiH1cR12ZHi5kmCmp8O8fQHaFO?w=256&h=181&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Rajasthani Thali", category: "thalis", price: 13, type: "veg", image: "https://th.bing.com/th/id/OIP.TElzxVA4Tq1WLtVIvbKmzQAAAA?w=228&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Gujarati Thali", category: "thalis", price: 12, type: "veg", image: "https://th.bing.com/th/id/OIP.oT-_-NRkX3UYI55My8vy1gHaHa?w=157&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Punjabi Thali", category: "thalis", price: 14, type: "non-veg", image: "https://th.bing.com/th/id/OIP.cL4ERYZ6TuJxhEGt-S_LlAHaHa?w=181&h=181&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veg Biryani Thali", category: "thalis", price: 11, type: "veg", image: "https://th.bing.com/th/id/OIP.DisCel6hpO2NkIkMb9olygHaF-?w=200&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Non-Veg Biryani Thali", category: "thalis", price: 15, type: "non-veg", image: "https://th.bing.com/th/id/OIP.D61DTNrBI2R910PX2FH9mAHaHd?w=167&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "South Indian Biryani Thali", category: "thalis", price: 13, type: "veg", image: "https://as2.ftcdn.net/v2/jpg/04/48/22/45/1000_F_448224578_42uO9EQbEGU7ZGsDGNkAr9GFyZ4lNPcQ.jpg" },
+{ name: "Lassi", category: "beverages", price: 3, type: "veg", image: "https://th.bing.com/th/id/OIP.vL6qc7K_LSc1TBVpm8fGywAAAA?w=166&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Cold Coffee", category: "beverages", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.AR_dWEOhC9Swo83eZPgcOwHaKn?w=137&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Tea", category: "beverages", price: 3, type: "veg", image: "https://th.bing.com/th/id/OIP.TnEr4WbSdsEaoCOroHyIbgHaFD?rs=1&pid=ImgDetMain" },
+{ name: "Juice", category: "beverages", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.63A5oZArAnr586aJ8rlN-gHaHJ?rs=1&pid=ImgDetMain" },
+{ name: "Soda", category: "beverages", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.RNo00WOoP_kyGQz0fSJyBAHaHa?w=202&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Milkshake", category: "beverages", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.a1Tsdc1kTbjQ5O5wocyhvAHaF3?w=249&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Fruit Smoothie", category: "beverages", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.TyUq3HqTyE7ErKrbnJUpgwHaHa?w=200&h=200&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Iced Tea", category: "beverages", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.Q3dcfF36SXDkhASx5SrMfAHaHa?w=202&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Hot Chocolate", category: "beverages", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.Wi8mv0zuxjVCEDB_5-swtwAAAA?w=188&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Coffee", category: "beverages", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.FKNIMCvdxtOvxbNzPznN3AHaF2?rs=1&pid=ImgDetMain" },
+{ name: "Chai", category: "beverages", price: 3, type: "veg", image: "https://th.bing.com/th/id/OIP.l7GZFONVQYrsIAauT-yCMAHaHa?w=187&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Fresh Lime Soda", category: "beverages", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.SOrbTgu5VBStbsF0i3GSggHaHa?w=194&h=194&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Ginger Beer", category: "beverages", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.KsL-cGR-IHxMHPNNlohXDAAAAA?w=120&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Iced Coffee", category: "beverages", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.yFHUne1wUYu30BQ5bi98jQHaIu?rs=1&pid=ImgDetMain" },
+{ name: "Mocha", category: "beverages", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.BpF9T-WRoawECT5xvvpSDwHaHa?w=195&h=195&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Samosas", category: "snacks", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.s5IkxdjSma9sO1wuH_MPSAHaFH?w=254&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Pakoras", category: "snacks", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.A8rYfiDrTNT2GHADqwW36QHaGJ?w=232&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Kachori", category: "snacks", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.h6s1kHVfCwyNsNv9KwZ8QQAAAA?w=152&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Mathri", category: "snacks", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.qgN_0uPjZc6pKMKsCY34JQAAAA?w=198&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Namkeen", category: "snacks", price: 6, type: "veg", image: "https://5.imimg.com/data5/OM/MK/MY-2373869/mix-namkeen-1000x1000.png" },
+{ name: "Bhel Puri", category: "snacks", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.IsCm6p-ySqA8SIWH6X9NKgHaE8?w=282&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Sev Puri", category: "snacks", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.ij_KmyIpoXapX5mbRQaeRwHaHa?w=189&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Raj Kachori", category: "snacks", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.OCL6HMZdu9Jadc5gnDWB5QHaGP?rs=1&pid=ImgDetMain" },
+{ name: "Kulfi Falooda", category: "snacks", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.3vcnnu0xgEXkK2qb1vwSAAHaHa?w=202&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Jalebi", category: "snacks", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.ScVeDouNz8aUdskicjwPiQHaE8?w=258&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Idli", category: "southIndian", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.9qXQhEZe_TlDYf0LMdGqAgHaHa?w=166&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Dosa", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.Mt9wmOqKwRxW9sIh9jkCBgHaEe?w=279&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Vada", category: "southIndian", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.maP23TqHxeEZDEQ6HQT9aAAAAA?w=196&h=136&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Samosa", category: "", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.s5IkxdjSma9sO1wuH_MPSAHaFH?w=254&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Pongal", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.d63tKx34SHnlqqRrgZz4rQHaHa?rs=1&pid=ImgDetMain" },
+{ name: "Upma", category: "southIndian", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.FZZlpNfLeTIhB7n53BtfWwHaGt?w=160&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Idiyappam", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.8srq0TbpT25ot_jxWUx68QHaE8?w=253&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Appam", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.JCrNy8O3cWgr3AzRNqns5AHaF5?w=206&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Neer Dosa", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.zDBX640cFdUM9EZVPq9AgwHaHV?w=201&h=199&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Rava Dosa", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.9LRfp8JEAB7gtmcrIs7zngHaE7?w=285&h=190&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Paper Dosa", category: "southIndian", price: 6, type: "veg", image: "http://ts3.mm.bing.net/th?id=OIP.qxS9PcbgbDqmWy3phk8FPQHaFO&pid=15.1" },
+{ name: "Masala Dosa", category: "southIndian", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.mWPMnA8-pZvduW8lwvZAOgHaHa?w=183&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Ragi Dosa", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.olyn8H1JFKpprmWZPNBukQHaEv?w=260&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Adai", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.m2pyc3ewbYlziaAquw5teAHaLH?w=202&h=303&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Pesarattu", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.oh3NB_9KgBiDW2ssBucTXgHaFj?w=260&h=195&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Uttapam", category: "southIndian", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.b0fqT284T-JucDjjq-4M8QHaHa?rs=1&pid=ImgDetMain" },
+{ name: "Vada Pav", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.CBOIK-gY1_P1vOkeQa43NAAAAA?w=189&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Sagu", category: "southIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.oRAV031xIwTQu3g7OQm5-QHaHa?w=161&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Butter Chicken", category: "northIndian", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.rJw0vWyANlwLZ_TABlSzmQHaD1?w=347&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Tandoori Chicken", category: "northIndian", price: 12, type: "non-veg", image: "https://th.bing.com/th/id/OIP.QegltKsdz6DvtTHx7YzUVQHaE8?w=280&h=187&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Palak Paneer", category: "northIndian", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.9tTzwDVefiTx0aUxIuecagHaEI?w=305&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chana Masala", category: "northIndian", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.1xIuzqzKrPdL2AMrCdVA7AHaHM?rs=1&pid=ImgDetMain" },
+{ name: "Samosa", category: "northIndian", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.s5IkxdjSma9sO1wuH_MPSAHaFH?w=254&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Kachori", category: "northIndian", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.A8rYfiDrTNT2GHADqwW36QHaGJ?w=232&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Raj Kachori", category: "northIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.OCL6HMZdu9Jadc5gnDWB5QHaGP?rs=1&pid=ImgDetMain" },
+{ name: "Chole Bhature", category: "northIndian", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.DBGe7vHoutuMyc2-gKgq0wHaHa?w=164&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Amritsari Kulcha", category: "northIndian", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.I68-ZCzslqhj9yCldGPEsgHaHZ?w=180&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veg Biryani", category: "veggieDelights", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.Fw3iDPaw-yYbRODWupUd6AAAAA?w=190&h=190&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veg Thali", category: "veggieDelights", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.ZcIcRGUfXx0cmhJcSKPJ1QAAAA?w=290&h=188&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Palak Paneer", category: "veggieDelights", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.9tTzwDVefiTx0aUxIuecagHaEI?w=305&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Chana Masala", category: "veggieDelights", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.1xIuzqzKrPdL2AMrCdVA7AHaHM?rs=1&pid=ImgDetMain" },
+{ name: "Samosa", category: "veggieDelights", price: 4, type: "veg", image: "https://th.bing.com/th/id/OIP.s5IkxdjSma9sO1wuH_MPSAHaFH?w=254&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Kachori", category: "veggieDelights", price: 5, type: "veg", image: "https://th.bing.com/th/id/OIP.A8rYfiDrTNT2GHADqwW36QHaGJ?w=232&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Raj Kachori", category: "veggieDelights", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.OCL6HMZdu9Jadc5gnDWB5QHaGP?rs=1&pid=ImgDetMain" },
+{ name: "Chole Bhature", category: "veggieDelights", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.DBGe7vHoutuMyc2-gKgq0wHaHa?w=164&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Amritsari Kulcha", category: "veggieDelights", price: 6, type: "veg", image: "https://th.bing.com/th/id/OIP.I68-ZCzslqhj9yCldGPEsgHaHZ?w=180&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Wrap", category: "veggieDelights", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.G9sL-DPyCiGzS8FnF-A0uwHaHa?w=172&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Sandwich", category: "veggieDelights", price: 7, type: "veg", image: "https://th.bing.com/th/id/OIP.htniuORrrK11AkiQ5k1qaQHaFN?w=269&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Burger", category: "veggieDelights", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.zhrPQyX6s-4o233mYlCuFQHaFl?w=264&h=198&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Pizza", category: "veggieDelights", price: 10, type: "veg", image: "https://th.bing.com/th/id/OIP.RZgM5TZOub-sVrTNSGfZFwHaHd?w=186&h=187&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Quesadilla", category: "veggieDelights", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.GWspxfmRbCGj2oGdana1RQHaE-?w=294&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Fajita", category: "veggieDelights", price: 9, type: "veg", image: "https://th.bing.com/th/id/OIP.DP7JTC2kh46lWqsh0N0u3wHaHc?w=162&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" },
+{ name: "Veggie Tacos", category: "veggieDelights", price: 8, type: "veg", image: "https://th.bing.com/th/id/OIP.YteLraJ_ahtpailherYXZAHaEa?rs=1&pid=ImgDetMain" },
+        ];
+        let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || [];
+        let vegOnly = false;
+
+        function displayMenu(items) {
+            const menuDiv = document.getElementById("menu-items");
+            menuDiv.innerHTML = ''; // Clear existing items
+
+            items.forEach(item => {
+                const menuItem = document.createElement("div");
+                menuItem.classList.add("menu-item");
+
+                const image = document.createElement("img");
+                image.src = item.image;
+                menuItem.appendChild(image);
+
+                const info = document.createElement("div");
+                info.classList.add("menu-item-info");
+                info.innerHTML = `${item.name} - &#8377;${item.price}`;
+                const button = document.createElement("button");
+                button.classList.add("add-to-cart");
+                button.innerText = "+";
+                button.onclick = () => addToCart(item);
+                info.appendChild(button);
+                menuItem.appendChild(info);
+
+                menuDiv.appendChild(menuItem);
+            });
+        }
+
+        function filterMenu(category) {
+            let filteredItems;
+            if (category === 'all') {
+                filteredItems = vegOnly ? menuItems.filter(item => item.type === "veg") : menuItems;
+            } else {
+                filteredItems = vegOnly 
+                    ? menuItems.filter(item => item.category === category && item.type === "veg") 
+                    : menuItems.filter(item => item.category === category);
+            }
+            displayMenu(filteredItems);
+        }
+
+        function toggleVegOnly() {
+            vegOnly = document.getElementById("veg-toggle").checked;
+            const toggleLabel = document.getElementById("toggle-label");
+            filterMenu('all');
+        }
+
+        function addToCart(item) {
+            const existingItemIndex = selectedItems.findIndex(selectedItem => selectedItem.name === item.name);
+            
+            if (existingItemIndex > -1) {
+                selectedItems[existingItemIndex].quantity += 1; 
+                selectedItems[existingItemIndex].price += item.price; 
+            } else {
+                selectedItems.push({ ...item, quantity: 1, price: item.price }); // Initialize price correctly
+            }
+            
+            localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            updateSelectedItems();
+            alert(`${item.name} has been added to your cart!`);
+        }
+
+        function updateSelectedItems() {
+            const selectedDiv = document.getElementById("selected-items");
+            selectedDiv.innerHTML = ''; // Clear existing items
+
+            selectedItems.forEach(item => {
+                const li = document.createElement("li");
+                li.innerText = `${item.name} - \u20B9${item.price.toFixed(2)} (Qty: ${item.quantity}) `;
+                
+                const button = document.createElement("button");
+                button.classList.add("remove-from-cart");
+                button.innerText = "-";
+                button.onclick = () => removeFromCart(item.name);
+                
+                li.appendChild(button);
+                selectedDiv.appendChild(li);
+            });
+        }
+
+        function removeFromCart(name) {
+            const indexToRemove = selectedItems.findIndex(item => item.name === name);
+            if (indexToRemove > -1) {
+                if (selectedItems[indexToRemove].quantity > 1) {
+                    selectedItems[indexToRemove].quantity -= 1;
+                    selectedItems[indexToRemove].price -= selectedItems[indexToRemove].price / (selectedItems[indexToRemove].quantity + 1); // Correct price decrement
+                } else {
+                    selectedItems.splice(indexToRemove, 1);
+                }
+            }
+            
+            localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+            updateSelectedItems();
+            alert(`${name} has been removed from your cart.`);
+        }
+
+        // Initial display of all items
+        filterMenu('all');
+        updateSelectedItems(); // Display previously selected items on load
+    </script>
+</body>
+</html> ⬤
